@@ -27,7 +27,8 @@
             android:padding="10dp"
             android:text="@string/qr_code_select_picture"
             android:textColor="@android:color/white"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
