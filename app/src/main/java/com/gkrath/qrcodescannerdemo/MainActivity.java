@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity{
                 return;
             }
 
-            String result = data.getStringExtra("got_qr_scan_relult");
+            String result = data.getStringExtra("got_qr_scan_result");
             Log.d(TAG,"Have scan result in your app activity :"+ result);
             txtResult.setText(result);
             txtResult.setVisibility(View.VISIBLE);
