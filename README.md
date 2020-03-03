@@ -20,7 +20,7 @@ allprojects {
 
 ```sh
   dependencies {
-	     implementation 'com.github.grath92:QRCodeScannerDemo:1.0'
+	     implementation 'com.github.grath92:QRCodeScannerDemo:1.2'
   }
 ```
 
