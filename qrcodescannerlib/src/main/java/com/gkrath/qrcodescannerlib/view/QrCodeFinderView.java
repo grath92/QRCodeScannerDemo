@@ -22,7 +22,7 @@ import com.gkrath.qrcodescannerlib.utils.ScreenUtils;
 public final class QrCodeFinderView extends RelativeLayout {
 
     private static final int[] SCANNER_ALPHA = { 0, 64, 128, 192, 255, 192, 128, 64 };
-    private static final long ANIMATION_DELAY = 100L;
+    private static final long ANIMATION_DELAY = -10L;
     private static final int OPAQUE = 0xFF;
 
     private Context mContext;
@@ -59,7 +59,7 @@ public final class QrCodeFinderView extends RelativeLayout {
 
         mFocusThick = 1;
         mAngleThick = 8;
-        mAngleLength = 40;
+        mAngleLength = 110;
         mScannerAlpha = 0;
         init(context);
     }
@@ -105,7 +105,7 @@ public final class QrCodeFinderView extends RelativeLayout {
 
         // Request another update at the animation interval, but only repaint the laser line,
         // not the entire viewfinder mask.
-        postInvalidateDelayed(ANIMATION_DELAY, frame.left, frame.top, frame.right, frame.bottom);
+//        postInvalidateDelayed(ANIMATION_DELAY, frame.left, frame.top, frame.right, frame.bottom);
     }
 
 
@@ -176,12 +176,36 @@ public final class QrCodeFinderView extends RelativeLayout {
         canvas.drawText(text, correctedLeft, newY, mPaint);
     }
 
+    private int cntr = 0;
+    private boolean goingup = false;
+    private static final int POINT_SIZE = 10;
+
     private void drawLaser(Canvas canvas, Rect rect) {
         mPaint.setColor(mLaserColor);
         mPaint.setAlpha(SCANNER_ALPHA[mScannerAlpha]);
         mScannerAlpha = (mScannerAlpha + 1) % SCANNER_ALPHA.length;
         int middle = rect.height() / 2 + rect.top;
-        canvas.drawRect(rect.left + 2, middle - 1, rect.right - 1, middle + 2, mPaint);
+//        canvas.drawRect(rect.left + 2, middle - 1, rect.right - 1, middle + 2, mPaint);
 
+        middle = middle + cntr;
+        if ((cntr < 330) && (goingup == false)) {
+            canvas.drawRect(rect.left + 2, middle - 1, rect.right - 1, middle + 2, mPaint);
+            cntr = cntr + 4;
+        }
+
+        if ((cntr >= 330) && (goingup == false)) goingup = true;
+
+        if ((cntr > -330) && (goingup == true)) {
+            canvas.drawRect(rect.left + 2, middle - 1, rect.right - 1, middle + 2, mPaint);
+            cntr = cntr - 4;
+        }
+
+        if ((cntr <= -330) && (goingup == true)) goingup = false;
+
+        postInvalidateDelayed(ANIMATION_DELAY,
+                rect.left - POINT_SIZE,
+                rect.top - POINT_SIZE,
+                rect.right + POINT_SIZE,
+                rect.bottom + POINT_SIZE);
     }
 }
